@@ -43,6 +43,9 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 		for nesting := d.Nesting(); d.NextBlock(nesting); {
 			switch d.Val() {
 			case "api_key":
+				if !d.NextArg() {
+					return d.ArgErr()
+				}
 				if p.Provider.APIKey != "" {
 					return d.Err("API key already set")
 				}
@@ -51,6 +54,9 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 					return d.ArgErr()
 				}
 			case "secret_api_key":
+				if !d.NextArg() {
+					return d.ArgErr()
+				}
 				if p.Provider.SecretAPIKey != "" {
 					return d.Err("Secret API key already set")
 				}

@@ -90,6 +90,7 @@ github.com/caddyserver/certmagic v0.12.1-0.20201215190346-201f83a06067 h1:gpjCX6
 github.com/caddyserver/certmagic v0.12.1-0.20201215190346-201f83a06067/go.mod h1:tr26xh+9fY5dN0J6IPAlMj07qpog22PJKa7Nw7j835U=
 github.com/caiych/porkbun v0.1.0 h1:3xj7+Jyhp7GX3T88ATJJqlAYavZ/p1ldfVXcAR4amqc=
 github.com/caiych/porkbun v0.1.0/go.mod h1:L76ULgShmz9oIEQpU8oPZgacjm3I761PoCf3BlUJE9k=
+github.com/caiych/porkbun v0.1.1/go.mod h1:L76ULgShmz9oIEQpU8oPZgacjm3I761PoCf3BlUJE9k=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
 github.com/census-instrumentation/opencensus-proto v0.2.0/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
