@@ -1,15 +1,13 @@
 package template
 
 import (
-	"fmt"
-
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
-	libdnstemplate "github.com/libdns/template"
+	"github.com/caiych/porkbun"
 )
 
 // Provider wraps the provider implementation as a Caddy module.
-type Provider struct{ *libdnstemplate.Provider }
+type Provider struct{ *porkbun.Provider }
 
 func init() {
 	caddy.RegisterModule(Provider{})
@@ -18,51 +16,59 @@ func init() {
 // CaddyModule returns the Caddy module information.
 func (Provider) CaddyModule() caddy.ModuleInfo {
 	return caddy.ModuleInfo{
-		ID:  "dns.providers.template",
-		New: func() caddy.Module { return &Provider{new(libdnstemplate.Provider)} },
+		ID:  "dns.providers.porkbun",
+		New: func() caddy.Module { return &Provider{new(porkbun.Provider)} },
 	}
 }
 
 // TODO: This is just an example. Useful to allow env variable placeholders; update accordingly.
 // Provision sets up the module. Implements caddy.Provisioner.
 func (p *Provider) Provision(ctx caddy.Context) error {
-	p.Provider.APIToken = caddy.NewReplacer().ReplaceAll(p.Provider.APIToken, "")
-	return fmt.Errorf("TODO: not implemented")
+	p.Provider.APIKey = caddy.NewReplacer().ReplaceAll(p.Provider.APIKey, "")
+	p.Provider.SecretAPIKey = caddy.NewReplacer().ReplaceAll(p.Provider.SecretAPIKey, "")
+	return nil
 }
 
-// TODO: This is just an example. Update accordingly.
 // UnmarshalCaddyfile sets up the DNS provider from Caddyfile tokens. Syntax:
 //
-// providername [<api_token>] {
-//     api_token <api_token>
+// porkbun {
+//     api_key <api_key>
+//     secret_api_key <secret_api_key>
 // }
-//
-// **THIS IS JUST AN EXAMPLE AND NEEDS TO BE CUSTOMIZED.**
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
-		if d.NextArg() {
-			p.Provider.APIToken = d.Val()
-		}
 		if d.NextArg() {
 			return d.ArgErr()
 		}
 		for nesting := d.Nesting(); d.NextBlock(nesting); {
 			switch d.Val() {
-			case "api_token":
-				if p.Provider.APIToken != "" {
-					return d.Err("API token already set")
+			case "api_key":
+				if p.Provider.APIKey != "" {
+					return d.Err("API key already set")
 				}
-				p.Provider.APIToken = d.Val()
+				p.Provider.APIKey = d.Val()
 				if d.NextArg() {
 					return d.ArgErr()
 				}
+			case "secret_api_key":
+				if p.Provider.SecretAPIKey != "" {
+					return d.Err("Secret API key already set")
+				}
+				p.Provider.SecretAPIKey = d.Val()
+				if d.NextArg() {
+					return d.ArgErr()
+				}
+
 			default:
 				return d.Errf("unrecognized subdirective '%s'", d.Val())
 			}
 		}
 	}
-	if p.Provider.APIToken == "" {
+	if p.Provider.APIKey == "" {
 		return d.Err("missing API token")
+	}
+	if p.Provider.SecretAPIKey == "" {
+		return d.Err("missing Secret API token")
 	}
 	return nil
 }
